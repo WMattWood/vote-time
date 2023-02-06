@@ -1,0 +1,56 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+.pieA {
+  fill: none;
+  stroke: #F44336;
+  stroke-width: 200;
+  stroke-dasharray: calc(1/3) calc(2/3) 0 0;
+  transition: stroke-dasharray 0.5s ease;
+  /* z-index: 3; */
+}
+
+.pieB {
+  fill: none;
+  stroke: #9C27B0;
+  stroke-width: 200;
+  stroke-dasharray: 0 calc(1/3) calc(1/3) calc(1/3);
+  transition: stroke-dasharray 0.5s ease;
+  /* z-index: 2; */
+}
+
+.pieC {
+  fill: transparent;
+  stroke: #2196F3;
+  stroke-width: 200;
+  stroke-dasharray: 0 calc(2/3) calc(1/3);
+  transition: stroke-dasharray 0.5s ease;
+  /* z-index: 1; */
+}
+
+svg {
+  margin: 0 auto;
+  transform: rotate(-90deg);
+  background: #ddd;
+  border-radius: 50%;
+  display: block;
+}
