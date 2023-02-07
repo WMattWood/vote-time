@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import styled from 'styled-components'
 import './App.css'
 
 function App() {
@@ -18,45 +16,6 @@ function App() {
   let percentage1 = count1 ? Math.floor( (count1 / total).toFixed(2) * 100 ) : 0
   let percentage2 = count2 ? Math.floor( (count2 / total).toFixed(2) * 100 ) : 0
   let percentage3 = count3 ? Math.floor( (count3 / total).toFixed(2) * 100 ) : 0
-
-    
-  // // OPEN AI ASSISTED VERSION
-  // let colors = ['#F44336', '#9C27B0', '#2196F3']
-  // let startAngle = 0;
-  // if (document.readyState === 'complete') {
-
-  //             if ( document.querySelector('.chart') === null ) {
-  //               let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  //                 svg.setAttribute('width', '400');
-  //                 svg.setAttribute('height', '400');
-  //                 svg.setAttribute('cx', '0');
-  //                 svg.setAttribute('cy', '0');
-  //                 svg.classList.add('chart');
-  //                 document.querySelector('.chartDisplay').appendChild(svg);
-  //               }
-                
-              
-  //             for (let i = 0; i < values.length; i++) {
-  //               // calculate end angle
-  //               let endAngle = (values[i] / total) * Math.PI * 2 + startAngle;
-  //               // create arc
-  //               let arc = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-  //               let x = 200,
-  //                 y = 200,
-  //                 r = 150;
-  //               let startX = x + r * Math.cos(startAngle);
-  //               let startY = y + r * Math.sin(startAngle);
-  //               let endX = x + r * Math.cos(endAngle);
-  //               let endY = y + r * Math.sin(endAngle);
-  //               let d = `M ${x} ${y} L ${startX} ${startY} A ${r} ${r} 0 ${(endAngle - startAngle > Math.PI) ? 1 : 0} 1 ${endX} ${endY} Z`;
-  //               arc.setAttribute('d', d);
-  //               arc.setAttribute('fill', colors[i]);
-  //               // arc.setAttribute('stroke', 'none');
-  //               document.querySelector('.chart').appendChild(arc);
-  //               // update start angle
-  //               startAngle = endAngle;
-  //             }
-  //   }
 
   const circlesAndValues = {  '.pieA': valA, 
                               '.pieB': valB, 
@@ -104,9 +63,31 @@ function App() {
       <div className="chartDisplay">
         {/* My Pie Chart! */}
         <svg width="400" height="400" className="chart">
-          <circle r="100" cx="200" cy="200" className="pieA" pathLength="1"/>
-          <circle r="100" cx="200" cy="200" className="pieB" pathLength="1"/>
-          <circle r="100" cx="200" cy="200" className="pieC" pathLength="1"/>
+          <defs>
+            {/* Blur Filter --> url(#blur) */}
+            <filter id="blur" width="3" height="3" x="-1" y="-1">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+            </filter>
+            {/* Lighting Filter --> url(#lighting) */}
+            <filter id="lighting" width="3" height="3" x="-1" y="-1">
+              <feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white">
+                <fePointLight x="-20" y="200" z="60"/>
+              </feDiffuseLighting>
+
+              <feComposite
+                in="SourceGraphic"
+                in2="light"
+                operator="arithmetic"
+                k1="1"
+                k2="0"
+                k3="0"
+                k4="0" />
+            </filter>
+          </defs>
+          {/* Segments */}
+          <circle r="100" cx="200" cy="200" className="pieA" pathLength="1" filter="url(#lighting)"/>
+          <circle r="100" cx="200" cy="200" className="pieB" pathLength="1" filter="url(#lighting)"/>
+          <circle r="100" cx="200" cy="200" className="pieC" pathLength="1" filter="url(#lighting)"/>
         </svg>
       </div>
 
