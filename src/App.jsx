@@ -29,7 +29,7 @@ function App() {
   } else if ( navigator.userAgent.indexOf("Chrome") > -1 ) {
     brightness = 60
   } else if ( navigator.userAgent.indexOf("Safari") > -1 ) {
-    brightness = 200
+    brightness = 160
   }
 
   // Find the dasharray string values based on the 
