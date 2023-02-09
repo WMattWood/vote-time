@@ -21,12 +21,15 @@ function App() {
                               '.pieB': valB, 
                               '.pieC': valC }
   
+  // Ugly polyfill hack to get equivalent appearance on different browsers
   let brightness
   console.log(navigator.userAgent)
   if ( navigator.userAgent.indexOf("Firefox") > -1 ) {
     brightness = 200
   } else if ( navigator.userAgent.indexOf("Chrome") > -1 ) {
     brightness = 60
+  } else if ( navigator.userAgent.indexOf("Safari") > -1 ) {
+    brightness = 200
   }
 
   // Find the dasharray string values based on the 
