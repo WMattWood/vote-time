@@ -24,9 +24,9 @@ function App() {
   let brightness
   console.log(navigator.userAgent)
   if ( navigator.userAgent.indexOf("Firefox") > -1 ) {
-    brightness = 300
+    brightness = 200
   } else if ( navigator.userAgent.indexOf("Chrome") > -1 ) {
-    brightness = 160
+    brightness = 60
   }
 
   // Find the dasharray string values based on the 
