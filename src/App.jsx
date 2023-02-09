@@ -29,9 +29,9 @@ function App() {
 
     // return an equally divided piechart if all values set to 0
     if ( values.every( x => x === 0 ) ) {
-      return ['calc(1/3) calc(2/3) 0 0',
-              '0 calc(1/3) calc(1/3) calc(1/3)',
-              '0 calc(2/3) calc(1/3), 0']
+      return ['calc(1px/3) calc(2px/3) 0 0',
+              '0 calc(1px/3) calc(1px/3) calc(1px/3)',
+              '0 calc(2px/3) calc(1px/3), 0']
     }
     
     const attrStrings = []
@@ -39,18 +39,18 @@ function App() {
     const lastSegment = values[values.length - 1]
     const middleSegments = values.slice(1, values.length - 1)
     
-    attrStrings.push(`calc(${firstSegment}/${total}) calc(${total - firstSegment}/${total})`)
+    attrStrings.push(`calc(${firstSegment}px/${total}) calc(${total - firstSegment}px/${total})`)
     
     middleSegments.forEach( currentSegment => {
       let val1 = `0`
-      let val2 = `calc(${firstSegment}/${total})`
-      let val3 = `calc(${currentSegment}/${total})`
+      let val2 = `calc(${firstSegment}px/${total})`
+      let val3 = `calc(${currentSegment}px/${total})`
       let remaining = total - (firstSegment + currentSegment)
-      let val4 = `calc(${remaining}/${total})`
+      let val4 = `calc(${remaining}px/${total})`
       attrStrings.push( [val1, val2, val3, val4].join(' ') )
     })
     
-    attrStrings.push(`0 calc(${total - lastSegment}/${total}) calc(${lastSegment}/${total})`)
+    attrStrings.push(`0 calc(${total - lastSegment}px/${total}) calc(${lastSegment}px/${total})`)
     
     return attrStrings
   }
