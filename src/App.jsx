@@ -21,6 +21,14 @@ function App() {
                               '.pieB': valB, 
                               '.pieC': valC }
   
+  let brightness
+  console.log(navigator.userAgent)
+  if ( navigator.userAgent.indexOf("Firefox") > -1 ) {
+    brightness = 300
+  } else if ( navigator.userAgent.indexOf("Chrome") > -1 ) {
+    brightness = 160
+  }
+
   // Find the dasharray string values based on the 
   const attributeStrings = findAttrStrings(values)
   
@@ -76,7 +84,6 @@ function App() {
 
   return (
     <div className="App">
-      {}
       <div className="chartDisplay">
         {/* My Pie Chart! */}
         <svg width="400" height="400" className="chart">
@@ -88,7 +95,7 @@ function App() {
             {/* Lighting Filter --> url(#lighting) */}
             <filter id="lighting" width="3" height="3" x="-1" y="-1">
               <feDiffuseLighting in="SourceGraphic" result="light" lightingColor="white">
-                <fePointLight x="-20" y="200" z="60"/>
+                <fePointLight x="-20" y="200" z={`${brightness}`}/>
               </feDiffuseLighting>
 
               <feComposite
