@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
@@ -26,6 +26,13 @@ function App() {
   
   // Helper function to format the dasharray string values
   function findAttrStrings( values ) {
+
+    // return an equally divided piechart if all values set to 0
+    if ( values.every( x => x === 0 ) ) {
+      return ['calc(1/3) calc(2/3) 0 0',
+              '0 calc(1/3) calc(1/3) calc(1/3)',
+              '0 calc(2/3) calc(1/3), 0']
+    }
     
     const attrStrings = []
     const firstSegment = values[0]
@@ -49,17 +56,28 @@ function App() {
   }
 
   // Wait until page is loaded before iterating over circlesAndValues object
-  if (document.readyState === 'complete') {
+  // function bofbof () {
+  //   if (document.readyState === 'complete') {
+      // Object.keys(circlesAndValues).forEach( (key, idx) => {
+      //   let element = document.querySelector(`${key}`)
+      //   console.log(element)
+      //   element.style.strokeDasharray = `${attributeStrings[idx]}`
+      // })
+  //   }
+  // }
+
+  // Iterate over circlesAndValues object and populate the dasharray attributes
+  useEffect( ()=> {
     Object.keys(circlesAndValues).forEach( (key, idx) => {
       let element = document.querySelector(`${key}`)
       console.log(element)
       element.style.strokeDasharray = `${attributeStrings[idx]}`
     })
-  }
+  })
 
   return (
     <div className="App">
-
+      {}
       <div className="chartDisplay">
         {/* My Pie Chart! */}
         <svg width="400" height="400" className="chart">
