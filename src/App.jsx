@@ -56,21 +56,20 @@ function App() {
   }
 
   // Wait until page is loaded before iterating over circlesAndValues object
-  // function bofbof () {
-  //   if (document.readyState === 'complete') {
-      // Object.keys(circlesAndValues).forEach( (key, idx) => {
-      //   let element = document.querySelector(`${key}`)
-      //   console.log(element)
-      //   element.style.strokeDasharray = `${attributeStrings[idx]}`
-      // })
-  //   }
+  // if (document.readyState === 'complete') {
+  //   Object.keys(circlesAndValues).forEach( (key, idx) => {
+  //   let element = document.querySelector(`${key}`)
+  //   console.log(element)
+  //   element.style.strokeDasharray = `${attributeStrings[idx]}`
+  // })
   // }
+
 
   // Iterate over circlesAndValues object and populate the dasharray attributes
   useEffect( ()=> {
     Object.keys(circlesAndValues).forEach( (key, idx) => {
       let element = document.querySelector(`${key}`)
-      console.log(element)
+      console.log("Changa", element)
       element.style.strokeDasharray = `${attributeStrings[idx]}`
     })
   })
@@ -88,7 +87,7 @@ function App() {
             </filter>
             {/* Lighting Filter --> url(#lighting) */}
             <filter id="lighting" width="3" height="3" x="-1" y="-1">
-              <feDiffuseLighting in="SourceGraphic" result="light" lighting-color="white">
+              <feDiffuseLighting in="SourceGraphic" result="light" lightingColor="white">
                 <fePointLight x="-20" y="200" z="60"/>
               </feDiffuseLighting>
 
