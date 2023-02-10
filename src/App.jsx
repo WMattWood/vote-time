@@ -1,37 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { BrowserContext } from './BrowserContext'
 import './App.css'
 
 function App() {
-  const [count1, setCount1] = useState(0)
-  const [count2, setCount2] = useState(0)
-  const [count3, setCount3] = useState(0)
+  const [valA, setValA] = useState(0)
+  const [valB, setValB] = useState(0)
+  const [valC, setValC] = useState(0)
 
-  let valA = count1;
-  let valB = count2;
-  let valC = count3;
+  const { brightness } = useContext(BrowserContext)
+
+  // let valA = valA;
+  // let valB = valB;
+  // let valC = valC;
   
   const values = [valA, valB, valC]
   const total = values.reduce( (x, y) =>  x + y)
 
-  let percentage1 = count1 ? Math.floor( (count1 / total).toFixed(2) * 100 ) : 0
-  let percentage2 = count2 ? Math.floor( (count2 / total).toFixed(2) * 100 ) : 0
-  let percentage3 = count3 ? Math.floor( (count3 / total).toFixed(2) * 100 ) : 0
+  let percentage1 = valA ? Math.floor( (valA / total).toFixed(2) * 100 ) : 0
+  let percentage2 = valB ? Math.floor( (valB / total).toFixed(2) * 100 ) : 0
+  let percentage3 = valC ? Math.floor( (valC / total).toFixed(2) * 100 ) : 0
 
   const circlesAndValues = {  '.pieA': valA, 
                               '.pieB': valB, 
                               '.pieC': valC }
   
-  // Ugly polyfill hack to get equivalent appearance on different browsers
-  let brightness
-  console.log(navigator.userAgent)
-  if ( navigator.userAgent.indexOf("Firefox") > -1 ) {
-    brightness = 200
-  } else if ( navigator.userAgent.indexOf("Chrome") > -1 ) {
-    brightness = 60
-  } else if ( navigator.userAgent.indexOf("Safari") > -1 ) {
-    brightness = 160
-  }
-
   // Find the dasharray string values based on the 
   const attributeStrings = findAttrStrings(values)
   
@@ -66,21 +58,10 @@ function App() {
     return attrStrings
   }
 
-  // Wait until page is loaded before iterating over circlesAndValues object
-  // if (document.readyState === 'complete') {
-  //   Object.keys(circlesAndValues).forEach( (key, idx) => {
-  //   let element = document.querySelector(`${key}`)
-  //   console.log(element)
-  //   element.style.strokeDasharray = `${attributeStrings[idx]}`
-  // })
-  // }
-
-
   // Iterate over circlesAndValues object and populate the dasharray attributes
   useEffect( ()=> {
     Object.keys(circlesAndValues).forEach( (key, idx) => {
       let element = document.querySelector(`${key}`)
-      console.log("Changa", element)
       element.style.strokeDasharray = `${attributeStrings[idx]}`
     })
   })
@@ -121,15 +102,15 @@ function App() {
       <h1>VOTE TIME</h1>
 
       <div className="card">
-          <button onClick={() => setCount1((count1) => count1 + 1)}>
+          <button onClick={() => setValA((valA) => valA + 1)}>
             Red is {percentage1}%
           </button>
       
-          <button onClick={() => setCount2((count2) => count2 + 1)}>
+          <button onClick={() => setValB((valB) => valB + 1)}>
             Purple is {percentage2}%
           </button>
 
-          <button onClick={() => setCount3((count3) => count3 + 1)}>
+          <button onClick={() => setValC((valC) => valC + 1)}>
             Blue is {percentage3}%
           </button>
       </div>
