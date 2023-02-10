@@ -3,26 +3,22 @@ import { BrowserContext } from './BrowserContext'
 import './App.css'
 
 function App() {
-  const [valA, setValA] = useState(0)
-  const [valB, setValB] = useState(0)
-  const [valC, setValC] = useState(0)
+  const [count1, setCount1] = useState(0)
+  const [count2, setCount2] = useState(0)
+  const [count3, setCount3] = useState(0)
 
   const { brightness } = useContext(BrowserContext)
-
-  // let valA = valA;
-  // let valB = valB;
-  // let valC = valC;
   
-  const values = [valA, valB, valC]
+  const values = [count1, count2, count3]
   const total = values.reduce( (x, y) =>  x + y)
 
-  let percentage1 = valA ? Math.floor( (valA / total).toFixed(2) * 100 ) : 0
-  let percentage2 = valB ? Math.floor( (valB / total).toFixed(2) * 100 ) : 0
-  let percentage3 = valC ? Math.floor( (valC / total).toFixed(2) * 100 ) : 0
+  let percentage1 = count1 ? Math.floor( (count1 / total).toFixed(2) * 100 ) : 0
+  let percentage2 = count2 ? Math.floor( (count2 / total).toFixed(2) * 100 ) : 0
+  let percentage3 = count3 ? Math.floor( (count3 / total).toFixed(2) * 100 ) : 0
 
-  const circlesAndValues = {  '.pieA': valA, 
-                              '.pieB': valB, 
-                              '.pieC': valC }
+  const circlesAndValues = {  '.pieA': count1, 
+                              '.pieB': count2, 
+                              '.pieC': count3 }
   
   // Find the dasharray string values based on the 
   const attributeStrings = findAttrStrings(values)
@@ -102,15 +98,15 @@ function App() {
       <h1>VOTE TIME</h1>
 
       <div className="card">
-          <button onClick={() => setValA((valA) => valA + 1)}>
+          <button onClick={() => setCount1((count1) => count1 + 1)}>
             Red is {percentage1}%
           </button>
       
-          <button onClick={() => setValB((valB) => valB + 1)}>
+          <button onClick={() => setCount2((count2) => count2 + 1)}>
             Purple is {percentage2}%
           </button>
 
-          <button onClick={() => setValC((valC) => valC + 1)}>
+          <button onClick={() => setCount3((count3) => count3 + 1)}>
             Blue is {percentage3}%
           </button>
       </div>
