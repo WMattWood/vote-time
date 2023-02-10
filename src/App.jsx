@@ -3,28 +3,21 @@ import { BrowserContext } from './BrowserContext'
 import './App.css'
 
 function App() {
+  const { brightness } = useContext(BrowserContext)
   const [count1, setCount1] = useState(0)
   const [count2, setCount2] = useState(0)
   const [count3, setCount3] = useState(0)
-
-  const { brightness } = useContext(BrowserContext)
   
   const values = [count1, count2, count3]
   const total = values.reduce( (x, y) =>  x + y)
-
-  let percentage1 = count1 ? Math.floor( (count1 / total).toFixed(2) * 100 ) : 0
-  let percentage2 = count2 ? Math.floor( (count2 / total).toFixed(2) * 100 ) : 0
-  let percentage3 = count3 ? Math.floor( (count3 / total).toFixed(2) * 100 ) : 0
-
   const circlesAndValues = {  '.pieA': count1, 
                               '.pieB': count2, 
                               '.pieC': count3 }
-  
-  // Find the dasharray string values based on the 
-  const attributeStrings = findAttrStrings(values)
-  
-  // Helper function to format the dasharray string values
-  function findAttrStrings( values ) {
+                                
+  const attributeStrings = findAttributeStrings(values)
+    
+  // return array of formatted dasharray string values
+  function findAttributeStrings( values ) {
 
     // return an equally divided piechart if all values set to 0
     if ( values.every( x => x === 0 ) ) {
@@ -54,7 +47,12 @@ function App() {
     return attrStrings
   }
 
-  // Iterate over circlesAndValues object and populate the dasharray attributes
+  // return formatted percentage of each value
+  function calcPercentage( count ) {
+    return count ? Math.floor( (count / total).toFixed(2) * 100 ) : 0
+  }
+  
+  // populate the dasharray attributes
   useEffect( ()=> {
     Object.keys(circlesAndValues).forEach( (key, idx) => {
       let element = document.querySelector(`${key}`)
@@ -62,6 +60,7 @@ function App() {
     })
   })
 
+  // JSX
   return (
     <div className="App">
       <div className="chartDisplay">
@@ -99,15 +98,15 @@ function App() {
 
       <div className="card">
           <button onClick={() => setCount1((count1) => count1 + 1)}>
-            Red is {percentage1}%
+            Red is {calcPercentage(count1)}%
           </button>
       
           <button onClick={() => setCount2((count2) => count2 + 1)}>
-            Purple is {percentage2}%
+            Purple is {calcPercentage(count2)}%
           </button>
 
           <button onClick={() => setCount3((count3) => count3 + 1)}>
-            Blue is {percentage3}%
+            Blue is {calcPercentage(count3)}%
           </button>
       </div>
 
