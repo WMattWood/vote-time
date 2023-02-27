@@ -2,16 +2,14 @@ import { useState, useEffect, useContext } from 'react'
 import { BrowserContext } from './BrowserContext'
 import './App.css'
  
-import firebase from "firebase/app"
-import 'firebase/firestore'
-import 'firebase/auth'
+import { initializeApp } from "firebase/app"
+import { getAuth, signInAnonymously } from 'firebase/auth'
+import { getDatabase, ref, set, update } from "firebase/database"
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
-import { initializeApp } from "firebase/app"
-
-firebase.initializeApp({
+const firebaseApp = initializeApp({
   apiKey: "AIzaSyC2D0ck265uZEPfbUhZ2XcR6g6mJCxyfac",
   authDomain: "pie-chart-demo.firebaseapp.com",
   databaseURL: "https://pie-chart-demo-default-rtdb.firebaseio.com",
@@ -21,12 +19,15 @@ firebase.initializeApp({
   appId: "1:164237282596:web:dc8c7ead80c411e36137b1"
 });
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+const auth = getAuth(firebaseApp);
+const db = getDatabase(firebaseApp);
 
 
 function App() {
   const { brightness } = useContext(BrowserContext)
+
+  const [user] = useAuthState(auth)
+  
   const [count1, setCount1] = useState(0)
   const [count2, setCount2] = useState(0)
   const [count3, setCount3] = useState(0)
@@ -83,6 +84,30 @@ function App() {
     })
   })
 
+  useEffect( ()=> {
+    signInAnonymously(auth)
+  }, [])
+
+  useEffect( ()=> {
+    set (ref(db, 'points'), {
+      red: 0,
+      blue: 0,
+      purple: 0
+    })
+  }, [])
+
+  // function setDbCount( color, value ) {
+  //   update(ref(db, 'points'), {
+  //     [color]: [value]
+  //   });
+  // }
+
+  function setDbCount( color, value ) {
+    update(ref(db, 'points'), {
+      [color]: value
+    });
+  }
+
   // JSX
   return (
     <div className="App">
@@ -120,15 +145,27 @@ function App() {
       <h1>VOTE TIME</h1>
 
       <div className="card">
-          <button onClick={() => setCount1((count1) => count1 + 1)}>
+          <button onClick={() => {
+            setCount1((count1) => count1 + 1)
+            setDbCount('red', count1 + 1 )
+            }
+            }>
             Red is {calcPercentage(count1)}%
           </button>
       
-          <button onClick={() => setCount2((count2) => count2 + 1)}>
+          <button onClick={() => {
+            setCount2((count2) => count2 + 1)
+            setDbCount('purple', count2 + 1 )
+            }
+            }>
             Purple is {calcPercentage(count2)}%
           </button>
 
-          <button onClick={() => setCount3((count3) => count3 + 1)}>
+          <button onClick={() => {
+            setCount3((count3) => count3 + 1)
+            setDbCount('blue', count3 + 1 )
+            }
+            }>
             Blue is {calcPercentage(count3)}%
           </button>
       </div>
