@@ -1,6 +1,29 @@
 import { useState, useEffect, useContext } from 'react'
 import { BrowserContext } from './BrowserContext'
 import './App.css'
+ 
+import firebase from "firebase/app"
+import 'firebase/firestore'
+import 'firebase/auth'
+
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
+import { initializeApp } from "firebase/app"
+
+firebase.initializeApp({
+  apiKey: "AIzaSyC2D0ck265uZEPfbUhZ2XcR6g6mJCxyfac",
+  authDomain: "pie-chart-demo.firebaseapp.com",
+  databaseURL: "https://pie-chart-demo-default-rtdb.firebaseio.com",
+  projectId: "pie-chart-demo",
+  storageBucket: "pie-chart-demo.appspot.com",
+  messagingSenderId: "164237282596",
+  appId: "1:164237282596:web:dc8c7ead80c411e36137b1"
+});
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
 
 function App() {
   const { brightness } = useContext(BrowserContext)
