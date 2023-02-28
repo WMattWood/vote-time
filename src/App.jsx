@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useState, useEffect, useContext } from 'react'
 import { BrowserContext } from './BrowserContext'
 import './App.css'
@@ -8,6 +9,9 @@ import { getDatabase, ref, set, update } from "firebase/database"
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { connectFirestoreEmulator } from 'firebase/firestore'
+
+import Moment from 'react-moment';
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyC2D0ck265uZEPfbUhZ2XcR6g6mJCxyfac",
@@ -22,11 +26,11 @@ const firebaseApp = initializeApp({
 const auth = getAuth(firebaseApp);
 const db = getDatabase(firebaseApp);
 
-
 function App() {
   const { brightness } = useContext(BrowserContext)
 
   const [user] = useAuthState(auth)
+  const [countdown, setCountdown] = useState("...")
   
   const [count1, setCount1] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -96,21 +100,35 @@ function App() {
     })
   }, [])
 
-  // function setDbCount( color, value ) {
-  //   update(ref(db, 'points'), {
-  //     [color]: [value]
-  //   });
-  // }
-
   function setDbCount( color, value ) {
     update(ref(db, 'points'), {
       [color]: value
     });
   }
 
+  function countDownTimer( value ) {
+    value = 30 - +value % 30
+    console.log(value)
+    console.log(value === 30 )
+    if ( value === 30 ) {
+      setCount1(0)
+      setCount2(0)
+      setCount3(0)
+      set (ref(db, 'points'), {
+        red: 0,
+        blue: 0,
+        purple: 0
+      });
+    }
+    setCountdown(value)
+  }
+
   // JSX
   return (
     <div className="App">
+      <Moment style={ { display: 'none' } } interval={1000} format="ss" aria-hidden={true} onChange={(val) => countDownTimer(val)}/>
+      {/* <Moment interval={30000} format="ss" display="none" onChange={(val) => console.log(val)}/> */}
+      <h1>{`${countdown}`}</h1>
       <div className="chartDisplay">
         {/* My Pie Chart! */}
         <svg width="400" height="400" className="chart">
