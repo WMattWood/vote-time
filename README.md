@@ -2,6 +2,9 @@
 
 Hosted live here: https://wmattwood.github.io/vote-time/
 
+NOTE: Safari browser not currently supported.  
+Feel free to [contact me](https://www.linkedin.com/in/wmattwood/) if you have an idea about how I can fix SVG animations on Safari!
+
 https://user-images.githubusercontent.com/47619076/217108014-b9583d0f-938d-4907-a4ae-0dcb870ef693.mov
 
 v0.3 - Added a timer
