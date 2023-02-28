@@ -5,7 +5,7 @@ import './App.css'
  
 import { initializeApp } from "firebase/app"
 import { getAuth, signInAnonymously } from 'firebase/auth'
-import { getDatabase, ref, set, update } from "firebase/database"
+import { getDatabase, ref, set, get, child, update, onValue } from "firebase/database"
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -25,6 +25,7 @@ const firebaseApp = initializeApp({
 
 const auth = getAuth(firebaseApp);
 const db = getDatabase(firebaseApp);
+
 
 function App() {
   const { brightness } = useContext(BrowserContext)
@@ -88,16 +89,17 @@ function App() {
     })
   })
 
+  // firebase stuff
   useEffect( ()=> {
     signInAnonymously(auth)
   }, [])
 
   useEffect( ()=> {
-    set (ref(db, 'points'), {
-      red: 0,
-      blue: 0,
-      purple: 0
-    })
+    // set (ref(db, 'points'), {
+    //   red: 0,
+    //   blue: 0,
+    //   purple: 0
+    // })
   }, [])
 
   function setDbCount( color, value ) {
@@ -106,10 +108,44 @@ function App() {
     });
   }
 
+
+  // const pointsRef = ref(db, 'points/')
+
+  // On first pageload, set counts to what's in the firebase db
+  useEffect( ()=> {
+    get ( ref(db, 'points')).then( (snapshot) => {
+      let score = snapshot.val()
+      setCount1(score.red)
+      setCount2(score.purple)
+      setCount3(score.blue)
+    })
+  }, [])
+
+  // whenever the countdown ticks
+  useEffect( () => {
+    const pointsRef = ref(db, 'points/')
+
+    onValue(pointsRef, (snapshot) => {
+      let points = snapshot.val()
+      if (points.red != count1) {
+        setCount1(points.red)
+      }
+
+      if (points.purple != count2) {
+        setCount2(points.purple)
+      }
+
+      if (points.blue != count3) {
+        setCount3(points.blue)
+      }
+
+      console.log("DB Updated:", snapshot.val())
+    })
+  } )
+ 
+
   function countDownTimer( value ) {
     value = 30 - +value % 30
-    console.log(value)
-    console.log(value === 30 )
     if ( value === 30 ) {
       setCount1(0)
       setCount2(0)
