@@ -1,18 +1,18 @@
-import styled from 'styled-components'
+// import react stuff
 import { useState, useEffect, useContext } from 'react'
 import { BrowserContext } from './BrowserContext'
+import Moment from 'react-moment';
 import './App.css'
  
+// import firebase stuff
 import { initializeApp } from "firebase/app"
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import { getDatabase, ref, set, get, child, update, onValue } from "firebase/database"
-
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { connectFirestoreEmulator } from 'firebase/firestore'
 
-import Moment from 'react-moment';
-
+// firebase credentials
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyC2D0ck265uZEPfbUhZ2XcR6g6mJCxyfac",
   authDomain: "pie-chart-demo.firebaseapp.com",
@@ -23,14 +23,18 @@ const firebaseApp = initializeApp({
   appId: "1:164237282596:web:dc8c7ead80c411e36137b1"
 });
 
+// firebase variables
 const auth = getAuth(firebaseApp);
 const db = getDatabase(firebaseApp);
-
 
 function App() {
   const { brightness } = useContext(BrowserContext)
 
+  // this user may be useful for distinguishing between multiple signed in
+  // users - in the case that I ever have to deal with large numbers of 
+  // simultaneously connections all spamming the buttons at the same time.
   const [user] = useAuthState(auth)
+
   const [countdown, setCountdown] = useState("...")
   
   const [count1, setCount1] = useState(0)
@@ -45,7 +49,7 @@ function App() {
                                 
   const attributeStrings = findAttributeStrings(values)
     
-  // return array of formatted dasharray string values
+  // function to return an array of formatted "dasharray" values as strings
   function findAttributeStrings( values ) {
 
     // return an equally divided piechart if all values set to 0
@@ -76,9 +80,16 @@ function App() {
     return attrStrings
   }
 
-  // return formatted percentage of each value
+  // function to return formatted percentage of each value
   function calcPercentage( count ) {
     return count ? Math.floor( (count / total).toFixed(2) * 100 ) : 0
+  }
+
+  // function to write new values to db
+  function setDbCount( color, value ) {
+    update(ref(db, 'points'), {
+      [color]: value
+    });
   }
   
   // populate the dasharray attributes
@@ -89,11 +100,12 @@ function App() {
     })
   })
 
-  // firebase stuff
+  // firebase anonymous signin
   useEffect( ()=> {
     signInAnonymously(auth)
   }, [])
 
+  // the original initialization useEffect (deprecated)
   useEffect( ()=> {
     // set (ref(db, 'points'), {
     //   red: 0,
@@ -101,15 +113,6 @@ function App() {
     //   purple: 0
     // })
   }, [])
-
-  function setDbCount( color, value ) {
-    update(ref(db, 'points'), {
-      [color]: value
-    });
-  }
-
-
-  // const pointsRef = ref(db, 'points/')
 
   // On first pageload, set counts to what's in the firebase db
   useEffect( ()=> {
@@ -121,11 +124,37 @@ function App() {
     })
   }, [])
 
-  // whenever the countdown ticks
+  // Runs whenever the clock 'ticks', every time 30 seconds is up
+  // it resets the values in local state and the database
+  // TODO: does this need to manually set local state as well? Or
+  // is reseeting the DB enough for a perceptually instant update?
+  function countDownTimer( value ) {
+    value = 30 - +value % 30
+    if ( value === 30 ) {
+      setCount1(0)
+      setCount2(0)
+      setCount3(0)
+      set (ref(db, 'points'), {
+        red: 0,
+        blue: 0,
+        purple: 0
+      });
+    }
+    setCountdown(value)
+  }
+
+  // TODO: refactor this onValue call to something more elegant. 
+  // this useEffect reacts to changes in the db and writes those
+  // changes to the local state if there has been any meaningful 
+  // update
   useEffect( () => {
     const pointsRef = ref(db, 'points/')
 
     onValue(pointsRef, (snapshot) => {
+
+      // (i think that onValue actually reacts not just when a value
+      // or child value updates, but also whenever onValue is called
+      // because onValue adds a listener...)
       let points = snapshot.val()
       if (points.red != count1) {
         setCount1(points.red)
@@ -144,20 +173,7 @@ function App() {
   } )
  
 
-  function countDownTimer( value ) {
-    value = 30 - +value % 30
-    if ( value === 30 ) {
-      setCount1(0)
-      setCount2(0)
-      setCount3(0)
-      set (ref(db, 'points'), {
-        red: 0,
-        blue: 0,
-        purple: 0
-      });
-    }
-    setCountdown(value)
-  }
+
 
   // JSX
   return (
