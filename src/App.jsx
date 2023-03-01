@@ -100,87 +100,84 @@ function App() {
     })
   })
 
-  // firebase anonymous signin
-  useEffect( ()=> {
-    signInAnonymously(auth)
-  }, [])
 
   // the original initialization useEffect (deprecated)
   useEffect( ()=> {
-    // set (ref(db, 'points'), {
-    //   red: 0,
-    //   blue: 0,
-    //   purple: 0
-    // })
-  }, [])
-
-  // On first pageload, set counts to what's in the firebase db
-  useEffect( ()=> {
-    get ( ref(db, 'points')).then( (snapshot) => {
-      let score = snapshot.val()
-      setCount1(score.red)
-      setCount2(score.purple)
-      setCount3(score.blue)
+    set (ref(db, 'points'), {
+      red: 0,
+      blue: 0,
+      purple: 0
     })
   }, [])
 
-  // Runs whenever the clock 'ticks', every time 30 seconds is up
-  // it resets the values in local state and the database
-  // TODO: does this need to manually set local state as well? Or
-  // is reseeting the DB enough for a perceptually instant update?
-  function countDownTimer( value ) {
-    value = 30 - +value % 30
-    if ( value === 30 ) {
-      setCount1(0)
-      setCount2(0)
-      setCount3(0)
-      set (ref(db, 'points'), {
-        red: 0,
-        blue: 0,
-        purple: 0
-      });
-    }
-    setCountdown(value)
-  }
+  // // firebase anonymous signin
+  // useEffect( ()=> {
+  //   signInAnonymously(auth)
+  // }, [])
 
-  // TODO: refactor this onValue call to something more elegant. 
-  // this useEffect reacts to changes in the db and writes those
-  // changes to the local state if there has been any meaningful 
-  // update
-  useEffect( () => {
-    const pointsRef = ref(db, 'points/')
+  // // On first pageload, set counts to what's in the firebase db
+  // useEffect( ()=> {
+  //   get ( ref(db, 'points')).then( (snapshot) => {
+  //     let score = snapshot.val()
+  //     setCount1(score.red)
+  //     setCount2(score.purple)
+  //     setCount3(score.blue)
+  //   })
+  // }, [])
 
-    onValue(pointsRef, (snapshot) => {
+  // // Runs whenever the clock 'ticks', every time 30 seconds is up
+  // // it resets the values in local state and the database
+  // // TODO: does this need to manually set local state as well? Or
+  // // is reseeting the DB enough for a perceptually instant update?
+  // function countDownTimer( value ) {
+  //   value = 30 - +value % 30
+  //   if ( value === 30 ) {
+  //     setCount1(0)
+  //     setCount2(0)
+  //     setCount3(0)
+  //     set (ref(db, 'points'), {
+  //       red: 0,
+  //       blue: 0,
+  //       purple: 0
+  //     });
+  //   }
+  //   setCountdown(value)
+  // }
 
-      // (i think that onValue actually reacts not just when a value
-      // or child value updates, but also whenever onValue is called
-      // because onValue adds a listener...)
-      let points = snapshot.val()
-      if (points.red != count1) {
-        setCount1(points.red)
-      }
+  // // TODO: refactor this onValue call to something more elegant. 
+  // // this useEffect reacts to changes in the db and writes those
+  // // changes to the local state if there has been any meaningful 
+  // // update
+  // useEffect( () => {
+  //   const pointsRef = ref(db, 'points/')
 
-      if (points.purple != count2) {
-        setCount2(points.purple)
-      }
+  //   onValue(pointsRef, (snapshot) => {
 
-      if (points.blue != count3) {
-        setCount3(points.blue)
-      }
+  //     // (i think that onValue actually reacts not just when a value
+  //     // or child value updates, but also whenever onValue is called
+  //     // because onValue adds a listener...)
+  //     let points = snapshot.val()
+  //     if (points.red != count1) {
+  //       setCount1(points.red)
+  //     }
 
-      console.log("DB Updated:", snapshot.val())
-    })
-  } )
- 
+  //     if (points.purple != count2) {
+  //       setCount2(points.purple)
+  //     }
 
+  //     if (points.blue != count3) {
+  //       setCount3(points.blue)
+  //     }
 
+  //     console.log("DB Updated:", snapshot.val())
+  //   })
+  // } )
 
   // JSX
   return (
     <div className="App">
-      <Moment style={ { display: 'none' } } interval={1000} format="ss" aria-hidden={true} onChange={(val) => countDownTimer(val)}/>
-      {/* <Moment interval={30000} format="ss" display="none" onChange={(val) => console.log(val)}/> */}
-      <h1>{`${countdown}`}</h1>
+      {/* <Moment style={ { display: 'none' } } interval={1000} format="ss" aria-hidden={true} onChange={(val) => countDownTimer(val)}/> */}
+      {/* <h1>{`${countdown}`}</h1> */}
       <div className="chartDisplay">
         {/* My Pie Chart! */}
         <svg width="400" height="400" className="chart">
@@ -217,7 +214,7 @@ function App() {
       <div className="card">
           <button onClick={() => {
             setCount1((count1) => count1 + 1)
-            setDbCount('red', count1 + 1 )
+            // setDbCount('red', count1 + 1 )
             }
             }>
             Red is {calcPercentage(count1)}%
@@ -225,7 +222,7 @@ function App() {
       
           <button onClick={() => {
             setCount2((count2) => count2 + 1)
-            setDbCount('purple', count2 + 1 )
+            // setDbCount('purple', count2 + 1 )
             }
             }>
             Purple is {calcPercentage(count2)}%
@@ -233,7 +230,7 @@ function App() {
 
           <button onClick={() => {
             setCount3((count3) => count3 + 1)
-            setDbCount('blue', count3 + 1 )
+            // setDbCount('blue', count3 + 1 )
             }
             }>
             Blue is {calcPercentage(count3)}%
