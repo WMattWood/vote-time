@@ -8,11 +8,19 @@ NOTE: Usage on iOS is reported to be choppy - it looks better on other browsers!
 https://user-images.githubusercontent.com/47619076/222253426-d711a695-250d-4793-b24f-452880cda8b1.mov
 
 
-v0.4 - Temporarily rolling back database features while searching for a more performant animation logic.
-     - Added a new video demo
-v0.3 - Added a timer
-     - Added automatic anonymous firebase signin to each unique session
-     - All sessions are now reactive to the database 'single source of truth'
-     - Values reset every 30 seconds.
-v0.2 - Pie chart now looks way cooler - changed colors and added a lighting effect.
-v0.1 - Pie chart displays and reacts in real time! Neat.
+# Changelog
+#### v0.4 
+- Temporarily rolling back database features while searching for a more performant animation logic.
+- Added a new video demo
+
+#### v0.3 
+- Added a timer
+- Added automatic anonymous firebase signin to each unique session
+- All sessions are now reactive to the database 'single source of truth'
+- Values reset every 30 seconds.
+
+#### v0.2 
+- Pie chart now looks way cooler - changed colors and added a lighting effect.
+
+#### v0.1 
+- Pie chart displays and reacts in real time! Neat.
