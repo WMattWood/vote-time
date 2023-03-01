@@ -2,11 +2,14 @@
 
 Hosted live here: https://wmattwood.github.io/vote-time/
 
-NOTE: Safari browser not currently supported.  
-Feel free to [contact me](https://www.linkedin.com/in/wmattwood/) if you have an idea about how I can fix SVG animations on Safari!
+NOTE: Usage on iOS is reported to be choppy - it looks better on other browsers!  This is something I am working on, however it may require a completely different implementation of the pie chart rendering logic... tbd. 
 
-https://user-images.githubusercontent.com/47619076/217108014-b9583d0f-938d-4907-a4ae-0dcb870ef693.mov
 
+https://user-images.githubusercontent.com/47619076/222253426-d711a695-250d-4793-b24f-452880cda8b1.mov
+
+
+v0.4 - Temporarily rolling back database features while searching for a more performant animation logic.
+     - Added a new video demo
 v0.3 - Added a timer
      - Added automatic anonymous firebase signin to each unique session
      - All sessions are now reactive to the database 'single source of truth'
