@@ -1,4 +1,4 @@
-### vote-time
+# vote-time
 
 Hosted live here: https://wmattwood.github.io/vote-time/
 
